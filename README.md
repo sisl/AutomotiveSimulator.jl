@@ -1,4 +1,4 @@
-# Automotive Driving Models
+# Automotive Simulator
 
 A Julia package containing tools for automotive simulations in 2D.
 
@@ -10,16 +10,7 @@ For visualization code please see [AutoViz](https://github.com/sisl/AutoViz.jl).
 
 ## Installation 
 
-Using the SISL registry (recommended): 
-
-```julia 
-] registry add https://github.com/sisl/Registry
-] add AutomotiveSimulator 
-```
-
-Installing from URL:
-
 ```julia 
 using Pkg
-Pkg.add(PackageSpec(url="https://github.com/sisl/AutomotiveSimulator.jl"))
+Pkg.add("AutomotiveSimulator")
 ```
