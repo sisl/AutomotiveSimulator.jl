@@ -6,7 +6,7 @@ A Julia package containing tools for automotive simulations in 2D.
 [![Coverage Status](https://coveralls.io/repos/github/sisl/AutomotiveSimulator.jl/badge.svg?branch=master)](https://coveralls.io/github/sisl/AutomotiveSimulator.jl?branch=master)
 [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://sisl.github.io/AutomotiveSimulator.jl/latest)
 
-For visualization code please see [AutoViz](https://github.com/sisl/AutoViz.jl).
+For visualization code please see [AutomotiveVisualization](https://github.com/sisl/AutomotiveVisualization.jl).
 
 ## Installation 
 
