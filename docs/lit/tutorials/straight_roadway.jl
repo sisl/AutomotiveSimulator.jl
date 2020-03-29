@@ -15,8 +15,8 @@
 # We use a straight roadway with 1 lane as the environment.
 
 using AutomotiveSimulator
-using AutoViz # for rendering
-AutoViz.colortheme["background"] = colorant"white"; # hide
+using AutomotiveVisualization # for rendering
+AutomotiveVisualization.colortheme["background"] = colorant"white"; # hide
 
 roadway = gen_straight_roadway(1, 2000.0)  # 200m long straight roadway with 1 lane
 scene = Scene([

@@ -10,8 +10,8 @@
 # In order to generate the road network, we first initialize a Roadway object.
 
 using AutomotiveSimulator
-using AutoViz
-AutoViz.colortheme["background"] = colorant"white"; # hide
+using AutomotiveVisualization
+AutomotiveVisualization.colortheme["background"] = colorant"white"; # hide
 using Random
 
 roadway = Roadway()
@@ -103,7 +103,7 @@ snapshot = render([roadway])
 # We define a `LaneOverlay` object that indicate the lane to highlight.
 # One could implement any custom type to display other information on the lane.
 # We then add a new method to the `add_renderable!` function that execute the specific
-# action (coloring in blue). Look at `Autoviz.jl` for more detail on the function
+# action (coloring in blue). Look at `AutomotiveVisualization.jl` for more detail on the function
 # `add_renderable!`.
 
 # The following animation iterates over the individual lanes of the intersection
@@ -114,7 +114,7 @@ struct LaneOverlay
     lane::Lane
     color::Colorant
 end
-function AutoViz.add_renderable!(rendermodel::RenderModel, overlay::LaneOverlay)
+function AutomotiveVisualization.add_renderable!(rendermodel::RenderModel, overlay::LaneOverlay)
     add_renderable!(rendermodel, overlay.lane, overlay.roadway, color_asphalt=overlay.color)
 end
 

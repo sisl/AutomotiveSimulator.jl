@@ -8,8 +8,8 @@
 # First let's create a synthetic dataset.
 
 using AutomotiveSimulator
-using AutoViz
-AutoViz.colortheme["background"] = colorant"white"; # hide
+using AutomotiveVisualization
+AutomotiveVisualization.colortheme["background"] = colorant"white"; # hide
 using Random
 
 roadway = roadway = gen_straight_roadway(3, 1000.0)

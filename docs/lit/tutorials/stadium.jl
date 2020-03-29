@@ -15,8 +15,8 @@
 # We load relevant modules and generate a 3-lane stadium roadway:
 
 using AutomotiveSimulator
-using AutoViz
-AutoViz.colortheme["background"] = colorant"white"; # hide
+using AutomotiveVisualization
+AutomotiveVisualization.colortheme["background"] = colorant"white"; # hide
 using Distributions
 
 roadway = gen_stadium_roadway(3)

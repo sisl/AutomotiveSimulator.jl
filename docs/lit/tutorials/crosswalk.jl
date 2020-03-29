@@ -11,8 +11,8 @@
 # and the crosswalk definition which is just a regular lane.
 
 using AutomotiveSimulator
-using AutoViz
-AutoViz.colortheme["background"] = colorant"white"; # hide
+using AutomotiveVisualization
+AutomotiveVisualization.colortheme["background"] = colorant"white"; # hide
 using Random
 
 struct CrosswalkEnv
@@ -50,7 +50,7 @@ env = CrosswalkEnv(roadway, crosswalk)
 
 using Cairo
 
-function AutoViz.add_renderable!(rendermodel::RenderModel, env::CrosswalkEnv)
+function AutomotiveVisualization.add_renderable!(rendermodel::RenderModel, env::CrosswalkEnv)
 
     ## render the road without the crosswalk
     roadway = gen_straight_roadway(2, roadway_length)

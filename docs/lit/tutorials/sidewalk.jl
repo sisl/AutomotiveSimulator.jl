@@ -7,8 +7,8 @@
 
 using Parameters
 using AutomotiveSimulator
-using AutoViz
-AutoViz.colortheme["background"] = colorant"white"; # hide
+using AutomotiveVisualization
+AutomotiveVisualization.colortheme["background"] = colorant"white"; # hide
 using Cairo
 
 # Define sidewalk IDs
@@ -77,7 +77,7 @@ env = SidewalkEnv(roadway, crosswalk, [top_sidewalk, bottom_sidewalk]);
 
 # Since there is no defined `add_renderable!` method for the crosswalk and the sidewalk, we must define it ourselves.
 
-function AutoViz.add_renderable!(rendermodel::RenderModel, env::SidewalkEnv)
+function AutomotiveVisualization.add_renderable!(rendermodel::RenderModel, env::SidewalkEnv)
     ## Render sidewalk
     for sw in env.sidewalk
         curve = sw.curve
@@ -103,7 +103,7 @@ function AutoViz.add_renderable!(rendermodel::RenderModel, env::SidewalkEnv)
         pts[2,i] = pt.pos.y
     end
 
-    ## We can add render instructions from AutoViz.
+    ## We can add render instructions from AutomotiveVisualization.
     ## Here we want the crosswalk to appear as a white-striped zebra crossing rather than a road.
     add_instruction!(rendermodel, render_dashed_line, (pts, colorant"white", env.crosswalk.width, 1.0, 1.0, 0.0, Cairo.CAIRO_LINE_CAP_BUTT))
 
