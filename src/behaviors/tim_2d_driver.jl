@@ -3,7 +3,9 @@
 Driver that combines longitudinal driver and lateral driver into one model.
 
 # Constructors
-	Tim2DDriver(timestep::Float64;mlon::LaneFollowingDriver=IntelligentDriverModel(), mlat::LateralDriverModel=ProportionalLaneTracker(), mlane::LaneChangeModel=TimLaneChanger(timestep))
+
+`Tim2DDriver(;kwargs...)`
+The keywords argument are the fields described below.
 
 # Fields
 - `mlon::LaneFollowingDriver = IntelligentDriverModel()` Longitudinal driving model

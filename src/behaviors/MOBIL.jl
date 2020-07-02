@@ -2,11 +2,13 @@
     MOBIL
 See Treiber & Kesting, 'Modeling Lane-Changing Decisions with MOBIL'
 
-# Constructor
-	MOBIL(timestep::Float64;mlon::LaneFollowingDriver=IntelligentDriverModel(),safe_decel::Float64=2.0,       politeness::Float64=0.35,advantage_threshold::Float64=0.1)
+# Constructor 
+
+`MOBIL(;kwargs...)`
+The keyword arguments are the fields highlighted below.
 
 # Fields
-- `dir::Int`
+- `dir::Int = DIR_MIDDLE`
 - `mlon::LaneFollowingDriver=IntelligentDriverModel()`
 - `safe_decel::Float64=2.0`
 - `politeness::Float64=0.35`
