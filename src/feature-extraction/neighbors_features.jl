@@ -57,6 +57,7 @@ const VEHICLE_TARGET_POINT_CENTER = VehicleTargetPointCenter()
     find_neighbor(scene::Scene, roadway::Roawday, ego::Entity; kwargs...)
 
 Search through lanes and road segments to find a neighbor of `ego` in the `scene`. 
+Returns a `NeighborLongitudinalResult` object with the index of the neighbor in the scene and its relative distance.
 
 # Arguments
 
@@ -81,15 +82,18 @@ function find_neighbor(scene::Scene, roadway::Roadway, ego::Entity{S,D,I};
                        ids_to_ignore::Union{Nothing, Set{I}} = nothing) where {S,D,I}
     
    
-    if lane == nothing 
+    if lane === nothing 
         return NeighborLongitudinalResult(nothing, max_distance)
     elseif get_lane(roadway, ego).tag == lane.tag
         tag_start = lane.tag 
+        s_start = posf(ego.state).s
     else  # project ego on desired lane
         roadproj = proj(posg(ego.state), lane, roadway)
+        roadind = RoadIndex(roadproj)
         tag_start = roadproj.tag 
+        s_start = roadway[roadind].s
     end
-    s_base = posf(ego.state).s + targetpoint_delta(targetpoint_ego, ego)
+    s_base = s_start + targetpoint_delta(targetpoint_ego, ego)
     
     tag_target = tag_start
     best_ind = nothing 
