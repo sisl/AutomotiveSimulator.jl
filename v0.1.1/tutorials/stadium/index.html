@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Driving in a Stadium · AutomotiveSimulator.jl</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit">AutomotiveSimulator.jl</span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">Tutorials</span><ul><li><a class="tocitem" href="../straight_roadway/">Driving on a Straight Roadway</a></li><li class="is-active"><a class="tocitem" href>Driving in a Stadium</a></li><li><a class="tocitem" href="../intersection/">Intersection</a></li><li><a class="tocitem" href="../crosswalk/">Crosswalk</a></li><li><a class="tocitem" href="../sidewalk/">Sidewalk</a></li><li><a class="tocitem" href="../feature_extraction/">Feature Extraction</a></li></ul></li><li><span class="tocitem">Manual</span><ul><li><a class="tocitem" href="../../Roadways/">Roadways</a></li><li><a class="tocitem" href="../../actions/">Driving Actions</a></li><li><a class="tocitem" href="../../states/">States</a></li><li><a class="tocitem" href="../../agent_definitions/">Agent Definition</a></li><li><a class="tocitem" href="../../behaviors/">Behaviors</a></li><li><a class="tocitem" href="../../simulation/">Simulation</a></li><li><a class="tocitem" href="../../collision_checkers/">Collision Checker</a></li><li><a class="tocitem" href="../../feature_extraction/">Feature Extraction</a></li></ul></li><li><span class="tocitem">Internals</span><ul><li><a class="tocitem" href="../../Vec/">Vec</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Tutorials</a></li><li class="is-active"><a href>Driving in a Stadium</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Driving in a Stadium</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/sisl/AutomotiveSimulator.jl/blob/master/docs/lit/tutorials/stadium.jl" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Driving-in-a-Stadium-1"><a class="docs-heading-anchor" href="#Driving-in-a-Stadium-1">Driving in a Stadium</a><a class="docs-heading-anchor-permalink" href="#Driving-in-a-Stadium-1" title="Permalink"></a></h1><p><a href="https://nbviewer.jupyter.org/github/sisl/AutomotiveSimulator.jl/blob/gh-pages/v0.1.1/notebooks/stadium.ipynb"><img src="https://img.shields.io/badge/show-nbviewer-579ACA.svg" alt/></a></p><p>This example demonstrates a 2D driving simulation where cars drive around a three-lane stadium. The entities are defined by the types:</p><ul><li><code>S</code> - <code>VehicleState</code>, containing the vehicle position (both globally and relative to the lane) and speed</li><li><code>D</code> - <code>VehicleDef</code>, containing length, width, and class</li><li><code>I</code> - <code>Symbol</code>, a unique label for each vehicle</li></ul><p>The environment is represented by a <code>Roadway</code> object which allows to define roads consisting of multiple lanes based on the RNDF format.</p><p>We load relevant modules and generate a 3-lane stadium roadway:</p><pre><code class="language-julia">using AutomotiveSimulator
+using AutomotiveVisualization
+using Distributions
+
+roadway = gen_stadium_roadway(3)
+snapshot = render([roadway])</code></pre><p><img src="../stadium.svg" alt="three lane stadium"/></p><p>As a next step, let&#39;s populate a scene with vehicles</p><pre><code class="language-julia">w = DEFAULT_LANE_WIDTH
+scene = Scene([
+    Entity(VehicleState(VecSE2(10.0,  -w, 0.0), roadway, 29.0), VehicleDef(), :alice),
+    Entity(VehicleState(VecSE2(40.0, 0.0, 0.0), roadway, 22.0), VehicleDef(), :bob),
+    Entity(VehicleState(VecSE2(30.0, -2w, 0.0), roadway, 27.0), VehicleDef(), :charlie),
+])
+car_colors = get_pastel_car_colors(scene)
+renderables = [
+    roadway,
+    (FancyCar(car=veh, color=car_colors[veh.id]) for veh in scene)...
+]
+snapshot = render(renderables)</code></pre><p><img src="../stadium_with_cars.svg" alt="stadium with cars"/></p><p>We can assign driver models to each agent and simulate the scenario.</p><pre><code class="language-julia">timestep = 0.1
+nticks = 300
+
+models = Dict{Symbol, DriverModel}(
+    :alice =&gt; LatLonSeparableDriver( # produces LatLonAccels
+        ProportionalLaneTracker(), # lateral model
+        IntelligentDriverModel(), # longitudinal model
+    ),
+    :bob =&gt; Tim2DDriver(
+         mlane = MOBIL(),
+    ),
+    :charlie =&gt; StaticDriver{AccelTurnrate, MvNormal}(
+        MvNormal([0.0,0.0], [1.0,0.1])
+    )
+)
+
+set_desired_speed!(models[:alice],   12.0)
+set_desired_speed!(models[:bob],     10.0)
+set_desired_speed!(models[:charlie],  8.0)
+
+scenes = simulate(scene, roadway, models, nticks, timestep)</code></pre><pre><code class="language-none">301-element Array{Scene{Entity{VehicleState,VehicleDef,Symbol}},1}:
+ Scene{Entity{VehicleState,VehicleDef,Symbol}}(3 entities)
+ Scene{Entity{VehicleState,VehicleDef,Symbol}}(3 entities)
+ Scene{Entity{VehicleState,VehicleDef,Symbol}}(3 entities)
+ Scene{Entity{VehicleState,VehicleDef,Symbol}}(3 entities)
+ Scene{Entity{VehicleState,VehicleDef,Symbol}}(3 entities)
+ Scene{Entity{VehicleState,VehicleDef,Symbol}}(3 entities)
+ Scene{Entity{VehicleState,VehicleDef,Symbol}}(3 entities)
+ Scene{Entity{VehicleState,VehicleDef,Symbol}}(3 entities)
+ Scene{Entity{VehicleState,VehicleDef,Symbol}}(3 entities)
+ Scene{Entity{VehicleState,VehicleDef,Symbol}}(3 entities)
+ ⋮
+ Scene{Entity{VehicleState,VehicleDef,Symbol}}(3 entities)
+ Scene{Entity{VehicleState,VehicleDef,Symbol}}(3 entities)
+ Scene{Entity{VehicleState,VehicleDef,Symbol}}(3 entities)
+ Scene{Entity{VehicleState,VehicleDef,Symbol}}(3 entities)
+ Scene{Entity{VehicleState,VehicleDef,Symbol}}(3 entities)
+ Scene{Entity{VehicleState,VehicleDef,Symbol}}(3 entities)
+ Scene{Entity{VehicleState,VehicleDef,Symbol}}(3 entities)
+ Scene{Entity{VehicleState,VehicleDef,Symbol}}(3 entities)
+ Scene{Entity{VehicleState,VehicleDef,Symbol}}(3 entities)</code></pre><p>md nothing # hide</p><p>An animation of the simulation can be rendered using the <code>Reel</code> package</p><pre><code class="language-julia">using Reel
+using Printf
+
+camera = TargetFollowCamera(:alice; zoom=10.)
+
+animation = roll(fps=1.0/timestep, duration=nticks*timestep) do t, dt
+    i = Int(floor(t/dt)) + 1
+    update_camera!(camera, scenes[i])
+    renderables = [
+        roadway,
+        (FancyCar(car=veh, color=car_colors[veh.id]) for veh in scenes[i])...,
+        IDOverlay(x_off=-2, y_off=1, scene=scenes[i]),
+        TextOverlay(text=[@sprintf(&quot;time: %.1fs&quot;, t)], pos=VecE2(40,40), font_size=24)
+    ]
+    render(renderables, camera=camera)
+end</code></pre><pre><code class="language-none">&quot;animated_stadium.gif&quot;</code></pre><p><img src="../animated_stadium.gif" alt="animated stadium with cars"/></p><p>Alternatively, one can also use the <code>Interact</code> framework to inspect the simulation record interactively.</p><pre><code class="language-">using Interact
+using Reel
+using Blink
+#md
+w = Window()
+viz = @manipulate for step in 1 : length(scenes)
+    render([roadway, scenes[step]])
+end
+body!(w, viz)</code></pre><p>The simulation results can be saved to a text file. Only entities using <code>VehicleState</code> and <code>VehicleDef</code> are supported out of the box. If you wish to do IO operation with different states and definition types you have to implement <code>Base.write</code> and <code>Base.read</code> for those new types.</p><pre><code class="language-julia">open(&quot;2Dstadium_listrec.txt&quot;, &quot;w&quot;) do io
+    write(io, scenes)
+end</code></pre><p>The trajectory data file can be loaded in a similar way. You need to specify the output type.</p><pre><code class="language-julia">loaded_scenes = open(&quot;2Dstadium_listrec.txt&quot;, &quot;r&quot;) do io
+    read(io, Vector{EntityScene{VehicleState, VehicleDef, String}})
+end
+render([roadway, loaded_scenes[1]])</code></pre><p><img src="../stadium_with_cars_loaded.svg" alt="stadium with cars after load"/></p><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../straight_roadway/">« Driving on a Straight Roadway</a><a class="docs-footer-nextpage" href="../intersection/">Intersection »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Monday 10 August 2020 05:28">Monday 10 August 2020</span>. Using Julia version 1.5.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
