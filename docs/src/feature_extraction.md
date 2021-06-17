@@ -59,7 +59,7 @@ As an example, let's define a feature function that returns the distance to the 
 
 ```julia
 function distance_to_rear_neighbor(roadway::Roadway, scene::Scene, ego::Entity)
-    neighbor = find_neighbor(scene, roadway, veh, rear=true)
+    neighbor = find_neighbor(scene, roadway, ego, rear=true)
     if neighbor.ind === nothing 
         return missing 
     else 
