@@ -12,4 +12,4 @@ Parameters = "d96e819e-fc66-5662-9728-84c9c7592b0a"
 Reel = "71555da5-176e-5e73-a222-aebc6c6e4f2f"
 
 [compat]
-Documenter = "0.24"
+Documenter = "0.27"
