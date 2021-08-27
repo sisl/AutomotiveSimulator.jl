@@ -78,11 +78,11 @@ export
 include("roadways/frenet.jl")
 
 export
-        gen_straight_curve,
-        gen_straight_segment,
-        gen_straight_roadway,
-        gen_stadium_roadway,
-        gen_bezier_curve
+    gen_straight_curve,
+    gen_straight_segment,
+    gen_straight_roadway,
+    gen_stadium_roadway,
+    gen_bezier_curve
 
 include("roadways/roadway_generation.jl")
 
@@ -92,6 +92,7 @@ export
     AbstractAgentDefinition,
     AgentClass,
     VehicleDef,
+    PedestrianDef,
     BicycleModel,
     length,
     width,
