@@ -1,6 +1,6 @@
 """
 	AccelSteeringAngle
-Allows driving the car in a circle based on the steering angle
+Allows driving the `BicycleModel` in a circle based on the steering angle
 If steering angle less than threshold 0.01 radian, just drives straight
 
 # Fields
