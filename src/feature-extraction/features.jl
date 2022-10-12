@@ -69,7 +69,7 @@ scene_1 = Scene([
             Entity(VehicleState(VecSE2(20.0,0.0,0.0), roadway, 10.0), VehicleDef(AgentClass.CAR, 5.0, 2.0), 2),
         ])
 
-dfs = extract_features((posgx, iscolliding), roadway, [scene_0, scene_1], [1,2])
+dfs = extract_features((posgx, ), roadway, [scene_0, scene_1], [1,2])
 
 dfs[1].posgx # history of global x position for vehicle of ID 1
 ```
