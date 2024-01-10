@@ -10,6 +10,11 @@ struct DummyDefinition <: AbstractAgentDefinition end
     @test length(d) == 4.0
     @test width(d) == 1.8
 
+    p = PedestrianDef()
+    @test class(p) == AgentClass.PEDESTRIAN
+    @test length(p) == 1.0 
+    @test width(p) == 1.0
+
     d2 = BicycleModel(VehicleDef())
     @test class(d2) == class(d)
     @test length(d2) == length(d)

@@ -77,6 +77,14 @@ function Base.read(io::IO, ::Type{VehicleDef})
 end
 
 """
+    PedestrianDef(length::Real=1.0, width::Real=1.0)
+helper to construct a VehicleDef of class PEDESTRIAN
+"""
+function PedestrianDef(length::Real=1.0, width::Real=1.0)
+    return VehicleDef(AgentClass.PEDESTRIAN, length, width)
+end
+
+"""
     BicycleModel
     BicycleModel(def::VehicleDef; a::Float64 = 1.5, b::Float64 = 1.5)
 Vehicle definition representing the bicycle model
